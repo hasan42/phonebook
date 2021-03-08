@@ -1,14 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
+
+import { Provider } from "mobx-react";
+import rootStore from "./store/rootStore";
+
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider {...rootStore}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById("root")
 );
 
