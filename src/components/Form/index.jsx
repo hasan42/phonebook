@@ -28,25 +28,17 @@ const addSchema = Yup.object().shape({
     .max(50, errorsString.maxSize)
     .required(errorsString.required),
   phone: Yup.number()
-    .integer(errorsString.number)
+    .typeError(errorsString.number)
     .required(errorsString.required),
 });
-
-/**
- * @description Начальные значения
- */
-const initialValues = {
-  firstName: "",
-  lastName: "",
-  phone: "",
-};
 
 const Form = inject("bookPhoneStore")(
   observer(() => {
     return (
       <div className="form mt-5">
         <Formik
-          initialValues={initialValues}
+          enableReinitialize
+          initialValues={bookPhoneStore.formInitial}
           validationSchema={addSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             try {
@@ -130,13 +122,14 @@ const Form = inject("bookPhoneStore")(
                     {errors.phone && touched.phone && errors.phone}
                   </div>
                 </div>
-                <div className="col align-self-end">
+                <div className="col">
                   <button
+                    style={{ marginTop: 32 }}
                     type="submit"
                     disabled={isSubmitting}
                     className="btn btn-primary"
                   >
-                    Добавить
+                    {values.id === "" ? "Добавить" : "Изменить"}
                   </button>
                 </div>
               </div>

@@ -3,8 +3,10 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
 const jsonParser = bodyParser.json();
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+/**
+ * @description Список элементов
+ */
 let phoneBook = [];
 
 app.use(
@@ -14,10 +16,16 @@ app.use(
   })
 );
 
+/**
+ * @description Возвращает список элементов
+ */
 app.get("/", function (req, res) {
   res.json(phoneBook);
 });
 
+/**
+ * @description Добавление элемента в список
+ */
 app.post("/add", jsonParser, function (req, res) {
   const newData = req.body;
   const newItem = { ...newData };
@@ -26,6 +34,25 @@ app.post("/add", jsonParser, function (req, res) {
   res.json(phoneBook);
 });
 
+/**
+ * @description Редактирование элемента в списке
+ */
+app.post("/edit", jsonParser, function (req, res) {
+  const newData = req.body;
+  const newItem = { ...newData };
+
+  phoneBook = phoneBook.map((el) => {
+    if (el.id === newItem.id) {
+      return { ...el, ...newItem };
+    }
+    return { ...el };
+  });
+  res.json(phoneBook);
+});
+
+/**
+ * @description Удаление элемента из списка
+ */
 app.post("/delete", jsonParser, function (req, res) {
   const delItem = req.body;
   phoneBook = phoneBook.filter((el) => el.id !== delItem.id);

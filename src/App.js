@@ -12,6 +12,9 @@ const App = inject("bookPhoneStore")(
     const delRow = React.useCallback((id) => {
       bookPhoneStore.remove(id);
     }, []);
+    const editRow = React.useCallback((item) => {
+      bookPhoneStore.edit(item);
+    }, []);
 
     const columns = React.useMemo(
       () => [
@@ -32,17 +35,25 @@ const App = inject("bookPhoneStore")(
           id: "deleteRow",
           Cell: ({ row }) => {
             return (
-              <button
-                className="btn btn-primary"
-                onClick={() => delRow(row.original.id)}
-              >
-                del
-              </button>
+              <>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => editRow(row.original)}
+                >
+                  Редактировать
+                </button>
+                <button
+                  className="btn btn-danger ml-2"
+                  onClick={() => delRow(row.original.id)}
+                >
+                  Удалить
+                </button>
+              </>
             );
           },
         },
       ],
-      []
+      [delRow, editRow]
     );
 
     return (
